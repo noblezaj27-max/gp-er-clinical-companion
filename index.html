@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102a43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<title>GP / ER Clinical Companion</title>
+<style>
+:root{--navy:#102a43;--blue:#1769aa;--teal:#087e78;--bg:#f2f5f9;--card:#fff;--ink:#172b4d;--muted:#60738a;--line:#dbe3ec;--amber:#fff3cd;--red:#a61b1b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}header{background:linear-gradient(135deg,#102a43,#1769aa);color:#fff;padding:calc(20px + env(safe-area-inset-top)) 17px 17px}header h1{font-size:21px;margin:0 0 5px}header p{margin:0;color:#dceaf6;font-size:12px}
+nav{display:flex;gap:7px;overflow-x:auto;background:#fff;padding:9px;position:sticky;top:0;z-index:4;border-bottom:1px solid var(--line)}nav button{border:0;border-radius:18px;padding:9px 12px;background:#edf2f7;color:var(--navy);font-weight:650;white-space:nowrap}nav button.active{background:var(--navy);color:white}
+main{max-width:900px;margin:auto;padding:13px 12px 45px}section{display:none}section.active{display:block}h2{font-size:19px;margin:9px 2px 12px}h3{font-size:16px;margin:0 0 10px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px #102a4308}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}label{display:block;font-size:12px;font-weight:700;color:#43566c;margin:10px 0 5px}input,select,textarea{width:100%;border:1px solid #cbd5e1;border-radius:9px;background:#fff;padding:11px;font:16px -apple-system,sans-serif;color:var(--ink)}textarea{min-height:85px}.btn{width:100%;border:0;border-radius:9px;background:var(--blue);color:white;padding:12px;margin-top:11px;font-weight:700}.out{margin-top:11px;padding:12px;border-radius:10px;background:#eaf4ff;border:1px solid #c7dff5;line-height:1.5}.warn{background:var(--amber);border:1px solid #efd48a;color:#634c08;padding:12px;border-radius:10px;font-size:13px;line-height:1.45}.danger{background:#fff0f0;border:1px solid #f0c4c4;color:#842020;padding:12px;border-radius:10px;font-size:13px;line-height:1.45}.muted{font-size:12px;color:var(--muted);line-height:1.45}.item{padding:11px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}a{color:#075985}.tag{display:inline-block;background:#e8f1f8;border-radius:20px;padding:3px 8px;font-size:11px;font-weight:700}.hide{display:none!important}footer{text-align:center;color:var(--muted);font-size:11px;padding:12px 18px 30px}
+</style></head><body>
+<header><h1>GP / ER Clinical Companion</h1><p>Offline-capable bedside calculators, structured guides & Philippine references · FINAL 3.0</p></header>
+<nav id="nav">
+<button class="active" data-id="home">Home</button><button data-id="dose">Drug dose</button><button data-id="infusion">Infusions</button><button data-id="fluids">Fluids</button><button data-id="electrolytes">Electrolytes</button><button data-id="abg">ABG</button><button data-id="scores">Scores</button><button data-id="clinical">Clinical guides</button><button data-id="orders">Orders</button><button data-id="references">References</button>
+</nav>
+<main>
+<section id="home" class="active">
+<div class="card"><h2>Welcome</h2><p>A single iPhone-friendly companion for adult, pediatric, neonatal, ER and ward workflows.</p><div class="warn"><b>Important safety boundary:</b> This app is a calculation and documentation aid, not a clinical decision system. It does not select drugs, prescribe doses, or replace current Philippine CPGs, institutional protocols, specialist advice, or bedside reassessment. All calculated values require independent verification.</div></div>
+<div class="grid">
+<div class="card"><h3>Medication calculations</h3><p class="muted">Weight-based dose, concentration-to-volume, and infusion pump rate.</p></div>
+<div class="card"><h3>Fluids & electrolytes</h3><p class="muted">Maintenance estimate, drip rate, sodium change estimate, corrected calcium.</p></div>
+<div class="card"><h3>Clinical interpretation</h3><p class="muted">ABG framework, ECG checklist, shock and emergency checklists.</p></div>
+<div class="card"><h3>Philippine references</h3><p class="muted">DOH GABAY, PAFP CPG compendium, specialty and international reference links.</p></div>
+</div>
+<div class="card"><h3>Quick safety checklist</h3><ul><li>Confirm patient identity, weight, age, allergies, pregnancy status where relevant.</li><li>Verify units, concentration, route, frequency, maximum dose and renal/hepatic adjustments.</li><li>For high-alert infusions, use an independent double-check and smart-pump/library policy.</li><li>Reassess clinical response and document the source/protocol used.</li><li>Escalate early if unstable or if required diagnostics, monitoring or definitive treatment are unavailable.</li></ul></div>
+</section>
+
+<section id="dose"><h2>Medication dose & volume calculator</h2><div class="card">
+<label>Weight (kg)</label><input id="dw" type="number" min="0" step=".01" placeholder="e.g. 14">
+<label>Prescribed dose</label><input id="dd" type="number" min="0" step=".01" placeholder="Enter dose from verified reference">
+<label>Dose unit</label><select id="du"><option value="mgdose">mg/kg/dose</option><option value="mgday">mg/kg/day</option><option value="mcgdose">mcg/kg/dose</option><option value="mcgday">mcg/kg/day</option></select>
+<label>Doses per day (for per-day regimens)</label><input id="df" type="number" min="1" value="2">
+<label>Liquid concentration (mg/mL)</label><input id="dc" type="number" min="0" step=".01" placeholder="e.g. 125 mg/5 mL = 25">
+<label>Maximum per dose (mg; optional)</label><input id="dm" type="number" min="0" step=".01">
+<button class="btn" onclick="doseCalc()">Calculate</button><div id="do" class="out hide"></div>
+<p class="muted">Enter the dose from a current, verified drug reference. The calculator does not contain a drug database and cannot determine the appropriate medication or dose.</p>
+</div></section>
+
+<section id="infusion"><h2>Continuous infusion calculator</h2><div class="card">
+<label>Weight (kg)</label><input id="iw" type="number" min="0" step=".01">
+<label>Ordered dose (mcg/kg/min)</label><input id="id" type="number" min="0" step=".01">
+<label>Total drug in final preparation (mg)</label><input id="im" type="number" min="0" step=".01">
+<label>Final total volume (mL)</label><input id="iv" type="number" min="0" step=".1">
+<button class="btn" onclick="infCalc()">Calculate pump rate</button><div id="io" class="out hide"></div>
+<div class="danger">For an already-authorized prescription only. This tool does not recommend a starting dose or titration target. Confirm drug, diluent, compatibility, concentration, line, pump library, dose range and monitoring. Independently double-check all vasoactive and other high-alert infusions.</div>
+</div></section>
+
+<section id="fluids"><h2>Fluid calculations</h2>
+<div class="card"><h3>Holliday–Segar maintenance estimate</h3><label>Weight (kg)</label><input id="fw" type="number" min="0" step=".01"><button class="btn" onclick="maint()">Calculate estimate</button><div id="fo" class="out hide"></div><p class="muted">Classic 100/50/20 mL/kg/day estimate only. Not a resuscitation bolus, deficit replacement, neonatal fluid prescription, or automatic IV order. Consider condition-specific fluid strategy and local guidance.</p></div>
+<div class="card"><h3>IV gravity drip rate</h3><label>Volume (mL)</label><input id="gv" type="number" min="0"><label>Duration (hours)</label><input id="gh" type="number" min="0" step=".1"><label>Giving set (gtt/mL)</label><select id="gg"><option>10</option><option>15</option><option selected>20</option><option>60</option></select><button class="btn" onclick="drip()">Calculate</button><div id="go" class="out hide"></div></div>
+</section>
+
+<section id="electrolytes"><h2>Electrolyte & chemistry calculators</h2>
+<div class="card"><h3>Simplified sodium mass-balance estimate</h3><label>Current serum Na (mmol/L)</label><input id="na" type="number" step=".1"><label>Infusate sodium (mmol/L)</label><input id="ina" type="number" step=".1"><label>Total body water (L; clinician-estimated)</label><input id="tbw" type="number" step=".1"><label>Infusate volume (L)</label><input id="vol" type="number" step=".1"><button class="btn" onclick="sodium()">Estimate sodium change</button><div id="nao" class="out hide"></div><div class="danger">This is a simplified estimate, not a correction prescription. It does not account adequately for ongoing urine/electrolyte losses, changing renal function, or dynamic physiology. Sodium correction requires frequent laboratory monitoring and a patient-specific plan to avoid overcorrection. Follow current institutional protocol and specialist guidance.</div></div>
+<div class="card"><h3>Corrected calcium estimate</h3><label>Total calcium (mg/dL)</label><input id="ca" type="number" step=".1"><label>Albumin (g/dL)</label><input id="al" type="number" step=".1"><button class="btn" onclick="calcium()">Calculate</button><div id="cao" class="out hide"></div><p class="muted">Formula estimate: measured Ca + 0.8 × (4 − albumin). May be inaccurate in critical illness, CKD and acid-base disorders; use ionized calcium when indicated.</p></div>
+<div class="card"><h3>Potassium infusion planning reminder</h3><p>Do not use a generic calculator to determine potassium replacement. Before administration, verify potassium concentration, route, maximum peripheral/central concentration, infusion rate, renal function, urine output, ECG/monitoring requirements and repeat-lab interval against your hospital protocol. Never administer concentrated potassium by IV push.</p></div>
+</section>
+
+<section id="abg"><h2>ABG interpretation worksheet</h2><div class="card">
+<label>pH</label><input id="ph" type="number" step=".001" placeholder="7.40"><label>PaCO₂ (mmHg)</label><input id="pco" type="number" step=".1"><label>HCO₃ (mmol/L)</label><input id="hco" type="number" step=".1"><label>PaO₂ (mmHg; optional)</label><input id="po" type="number" step=".1"><label>FiO₂ as decimal (optional; e.g. 0.21)</label><input id="fio" type="number" step=".01"><button class="btn" onclick="abg()">Interpret acid-base pattern</button><div id="abgo" class="out hide"></div><p class="muted">Pattern aid only. Assess clinical context, sample type, compensation, mixed disorders, lactate, electrolytes, oxygen delivery and ventilatory support. Do not base treatment on this interpretation alone.</p></div></section>
+
+<section id="clinical"><h2>Clinical quick guides</h2>
+<div class="card"><h3>Unstable patient / shock checklist</h3><ol><li>Call for help; assign team roles and activate local emergency/transfer pathway.</li><li>Assess airway, breathing, circulation, disability and exposure; monitor SpO₂, ECG, BP, temperature and mental status.</li><li>Establish appropriate access; obtain focused history, exam, bedside glucose and indicated investigations without delaying stabilization.</li><li>Identify likely shock category and reversible cause; reassess after each intervention.</li><li>Document trends, response, escalation and transfer communication.</li></ol><p class="muted">This is a generic safety checklist, not a resuscitation algorithm or fluid/vasopressor prescription.</p></div>
+<div class="card"><h3>ECG systematic review</h3><ol><li>Confirm patient, date/time, calibration (usually 25 mm/s and 10 mm/mV) and lead placement.</li><li>Rate and rhythm; P waves and relationship to QRS.</li><li>Axis; PR, QRS and QT/QTc intervals.</li><li>QRS morphology, bundle branch patterns, voltage and hypertrophy.</li><li>ST segments, T waves, pathologic Q waves and comparison with prior ECG.</li><li>Correlate with symptoms, vitals and serial ECG/troponin when indicated; escalate suspected time-critical ischemia or dangerous arrhythmia.</li></ol></div>
+<div class="card"><h3>Dengue / febrile patient safety checklist</h3><ul><li>Assess warning signs, hemodynamic status, perfusion, urine output, oral intake and bleeding.</li><li>Trend hematocrit and platelet count in context; a single platelet count does not define severity or fluid requirement.</li><li>Use current DOH dengue guidance and phase-specific monitoring; avoid automatic fluid rates.</li><li>Escalate shock, respiratory distress, significant bleeding, altered sensorium, poor perfusion or inability to monitor safely.</li></ul><p class="muted">No dengue fluid prescription is generated in this app.</p></div>
+<div class="card"><h3>OB emergency readiness checklist</h3><ul><li>Call obstetric, anesthesia, neonatal and blood bank support as appropriate.</li><li>Assess maternal ABCs, vitals, bleeding, uterine tone, gestational age and fetal status where relevant.</li><li>Establish access, obtain indicated labs/crossmatch and prepare escalation/transfer.</li><li>Use current hospital obstetric emergency protocols for hemorrhage, severe hypertension/eclampsia, sepsis, shoulder dystocia and cord prolapse.</li><li>Document timing, events, medications, response and handover.</li></ul><p class="muted">No medication doses or procedural instructions are supplied; follow current specialty protocols.</p></div>
+<div class="card"><h3>Neonatal / pediatric emergency readiness</h3><ul><li>Use an accurate current weight; for neonates, confirm gestational and postnatal age.</li><li>Use age-appropriate equipment and locally approved pediatric/neonatal resuscitation algorithms.</li><li>Check concentration and dose in mg/kg AND total mg AND mL before administration.</li><li>Confirm maximum dose, interval, renal adjustment and monitoring.</li><li>Escalate early when pediatric airway, monitoring, blood products or definitive care are unavailable.</li></ul></div>
+<div class="card"><h3>ACLS / PALS</h3><p>Use the current official resuscitation algorithms and certified training materials. This app intentionally does not reproduce proprietary algorithm charts or provide drug-dose tables.</p><a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines" target="_blank" rel="noopener">AHA CPR & ECC Guidelines ↗</a></div>
+</section>
+
+<section id="orders"><h2>Sample order & prescription builder</h2><div class="card">
+<p class="muted">Creates a blank structured draft for clinician completion. It does not select a treatment or validate an order.</p>
+<label>Patient identifier (avoid unnecessary personal data)</label><input id="pid" placeholder="Hospital number / initials">
+<label>Age / weight</label><input id="pinfo" placeholder="e.g. 45 years, 62 kg">
+<label>Working diagnosis</label><input id="dx" placeholder="Enter diagnosis">
+<label>Medication (generic name)</label><input id="med" placeholder="Enter verified medication">
+<label>Dose and units</label><input id="doseorder" placeholder="Enter dose from approved reference">
+<label>Route / frequency / duration</label><input id="route" placeholder="Enter route, interval and duration">
+<label>Concentration / volume (if applicable)</label><input id="strength" placeholder="Specify exact preparation">
+<label>Monitoring / investigations / precautions</label><textarea id="monitor" placeholder="Specify parameters, hold criteria, labs, allergies and reassessment"></textarea>
+<button class="btn" onclick="makeOrder()">Generate draft</button><div id="orderout" class="out hide"></div><button class="btn" onclick="copyOrder()">Copy draft</button><p class="muted">Review, complete, sign and enter into the official medical record under your institution's policy. Avoid entering identifiable patient data into shared/public devices.</p>
+</div></section>
+
+
+<section id="scores"><h2>Additional bedside calculators</h2>
+<div class="card"><h3>Mean arterial pressure (MAP)</h3>
+<label>Systolic BP (mmHg)</label><input id="sbp" type="number" step="1">
+<label>Diastolic BP (mmHg)</label><input id="dbp" type="number" step="1">
+<button class="btn" onclick="calcMAP()">Calculate MAP</button><div id="mapout" class="out hide"></div>
+<p class="muted">Approximation: (SBP + 2 × DBP) / 3. Less accurate with marked tachycardia, arrhythmia or abnormal waveforms; use direct measurement when available.</p></div>
+<div class="card"><h3>Shock index</h3><label>Heart rate (beats/min)</label><input id="hr" type="number" step="1"><label>Systolic BP (mmHg)</label><input id="sish" type="number" step="1"><button class="btn" onclick="calcSI()">Calculate</button><div id="siout" class="out hide"></div><p class="muted">Shock index = heart rate / systolic BP. Interpretation varies by age and clinical condition; not a standalone diagnostic test.</p></div>
+<div class="card"><h3>Anion gap</h3><label>Na (mmol/L)</label><input id="agna" type="number" step=".1"><label>Cl (mmol/L)</label><input id="agcl" type="number" step=".1"><label>HCO₃ (mmol/L)</label><input id="agh" type="number" step=".1"><label>Albumin (g/dL, optional)</label><input id="agal" type="number" step=".1"><button class="btn" onclick="calcAG()">Calculate</button><div id="agout" class="out hide"></div><p class="muted">Anion gap = Na − (Cl + HCO₃). Optional albumin adjustment = AG + 2.5 × (4 − albumin). Reference intervals are laboratory-dependent.</p></div>
+<div class="card"><h3>Adult BMI</h3><label>Weight (kg)</label><input id="bmw" type="number" step=".1"><label>Height (cm)</label><input id="bmh" type="number" step=".1"><button class="btn" onclick="calcBMI()">Calculate</button><div id="bmout" class="out hide"></div></div>
+<div class="card"><h3>Cockcroft–Gault estimated creatinine clearance</h3>
+<label>Age (years; adults only)</label><input id="cga" type="number" step="1"><label>Weight (kg)</label><input id="cgw" type="number" step=".1"><label>Serum creatinine (mg/dL)</label><input id="cgs" type="number" step=".01">
+<label>Equation coefficient</label><select id="cgsex"><option value="1">Male coefficient</option><option value=".85">Female coefficient</option></select>
+<button class="btn" onclick="calcCG()">Calculate</button><div id="cgout" class="out hide"></div><p class="muted">For adults with reasonably stable creatinine only. Selecting an appropriate body weight requires clinical judgment. Not valid for neonates, children or rapidly changing kidney function.</p></div>
+</section>
+<section id="references"><h2>Reference library</h2><div class="card">
+<div class="item"><b>DOH GABAY – Philippine CPG portal</b><br><a href="https://doh-gabay.telehealth.ph/" target="_blank" rel="noopener">Open portal ↗</a></div>
+<div class="item"><b>PAFP – Compendium of DOH-approved CPGs</b><br><a href="https://thepafp.org/compendium-of-doh-approved-clinic-practice-guidelines/" target="_blank" rel="noopener">Open compendium ↗</a></div>
+<div class="item"><b>DOH Omnibus Health Guidelines</b><br><a href="https://doh-gabay.telehealth.ph/guideline.php?type=ohg" target="_blank" rel="noopener">Open guidelines ↗</a></div>
+<div class="item"><b>WHO publications</b><br><a href="https://www.who.int/publications" target="_blank" rel="noopener">Open WHO ↗</a></div>
+<div class="item"><b>AHA CPR & ECC guidelines</b><br><a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines" target="_blank" rel="noopener">Open AHA ↗</a></div>
+<div class="item"><b>MSD Manual Professional</b><br><a href="https://www.msdmanuals.com/professional" target="_blank" rel="noopener">Open MSD ↗</a></div>
+<div class="item"><b>Medscape</b><br><a href="https://www.medscape.com/" target="_blank" rel="noopener">Open Medscape ↗</a></div>
+<div class="item"><b>UpToDate</b><br><a href="https://www.uptodate.com/" target="_blank" rel="noopener">Open UpToDate ↗</a></div>
+<div class="item"><b>NICE NG29 – IV fluid therapy in children and young people</b><br><a href="https://www.nice.org.uk/guidance/ng29/chapter/Recommendations" target="_blank" rel="noopener">Official recommendations ↗</a></div>
+<div class="item"><b>2025 AHA CPR/ECC – official algorithm library</b><br><a href="https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/algorithms/" target="_blank" rel="noopener">Official algorithms ↗</a></div>
+<div class="warn">The calculator modules work without an internet connection after the app has been installed and cached. External reference links require internet. Always check guideline edition/date and local applicability.</div>
+</div></section>
+</main><footer>GP / ER Clinical Companion FINAL 3.0 · Educational support only · Verify every result independently.</footer>
+<script>
+const el=id=>document.getElementById(id), n=id=>Number(el(id).value);
+function out(id,s){el(id).innerHTML=s;el(id).classList.remove('hide')}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));document.querySelectorAll('main section').forEach(x=>x.classList.remove('active'));b.classList.add('active');el(b.dataset.id).classList.add('active');window.scrollTo(0,0)});
+function calcMAP(){let a=n('sbp'),b=n('dbp');out('mapout',a>0&&b>0&&a>=b?`Approximate MAP: <b>${((a+2*b)/3).toFixed(1)} mmHg</b>`:'Enter valid BP with systolic ≥ diastolic.')}
+function calcSI(){let h=n('hr'),s=n('sish');out('siout',h>0&&s>0?`Shock index: <b>${(h/s).toFixed(2)}</b>`:'Enter positive HR and systolic BP.')}
+function calcAG(){let a=n('agna'),c=n('agcl'),h=n('agh'),al=n('agal');if(!(a>0&&c>0&&h>0)){out('agout','Enter valid electrolytes.');return}let ag=a-c-h;out('agout',`Anion gap: <b>${ag.toFixed(1)} mmol/L</b>${al>0?`<br>Albumin-adjusted: <b>${(ag+2.5*(4-al)).toFixed(1)} mmol/L</b>`:''}<br><span class="muted">Interpret against your laboratory's reference range.</span>`)}
+function calcBMI(){let w=n('bmw'),h=n('bmh')/100;out('bmout',w>0&&h>0?`BMI: <b>${(w/h**2).toFixed(1)} kg/m²</b>`:'Enter valid height and weight.')}
+function calcCG(){let a=n('cga'),w=n('cgw'),scr=n('cgs'),factor=n('cgsex');out('cgout',a>=18&&a<140&&w>0&&scr>0?`Estimated creatinine clearance: <b>${(((140-a)*w/(72*scr))*factor).toFixed(1)} mL/min</b>`:'Enter valid adult age, weight and creatinine.')}
+function doseCalc(){let w=n('dw'),d=n('dd'),c=n('dc'),f=n('df'),u=el('du').value,m=n('dm');if(!(w>0&&d>0&&c>0)||((u.endsWith('day'))&&!(f>0))){out('do','Enter valid positive weight, prescribed dose and concentration.');return}let mg=(u.startsWith('mcg')?d/1000:d)*w;if(u.endsWith('day'))mg/=f;let cap=false;if(m>0&&mg>m){mg=m;cap=true}out('do',`Dose per administration: <b>${mg.toFixed(3)} mg</b><br>Volume: <b>${(mg/c).toFixed(3)} mL</b>${cap?'<br><b>Entered maximum dose cap applied.</b>':''}<br><span class="muted">Confirm dose basis, units, interval, maximum and concentration independently.</span>`)}
+function infCalc(){let w=n('iw'),d=n('id'),mg=n('im'),v=n('iv');if(!(w>0&&d>0&&mg>0&&v>0)){out('io','Enter all positive values.');return}let conc=mg*1000/v,rate=d*w*60/conc;out('io',`Prepared concentration: <b>${conc.toFixed(2)} mcg/mL</b><br>Pump rate: <b>${rate.toFixed(2)} mL/hour</b><br><span class="muted">Formula: ordered dose × weight × 60 ÷ concentration.</span>`)}
+function maint(){let w=n('fw');if(!(w>0)){out('fo','Enter a valid weight.');return}let m=w<=10?w*100:w<=20?1000+(w-10)*50:1500+(w-20)*20;out('fo',`Classic maintenance estimate: <b>${m.toFixed(0)} mL/day</b><br>Hourly equivalent: <b>${(m/24).toFixed(1)} mL/hour</b>`)}
+function drip(){let v=n('gv'),h=n('gh'),g=n('gg');if(!(v>0&&h>0)){out('go','Enter positive volume and duration.');return}out('go',`Rate: <b>${(v/h).toFixed(1)} mL/hour</b><br>Gravity: <b>${Math.round(v*g/(h*60))} drops/min</b>`)}
+function sodium(){let na=n('na'),ina=n('ina'),tbw=n('tbw'),v=n('vol');if(!(na>0&&ina>=0&&tbw>0&&v>0)){out('nao','Enter valid values.');return}let delta=(ina-na)*v/(tbw+v);out('nao',`Estimated change after entered volume: <b>${delta>=0?'+':''}${delta.toFixed(2)} mmol/L</b><br>Estimated Na: <b>${(na+delta).toFixed(2)} mmol/L</b><br><span class="muted">Simplified mass-balance estimate for the entered volume; excludes urinary losses, infusate potassium and other dynamic effects. Not a treatment target or safe correction schedule.</span>`)}
+function calcium(){let ca=n('ca'),a=n('al');if(!(ca>0&&a>0)){out('cao','Enter positive calcium and albumin.');return}out('cao',`Estimated corrected calcium: <b>${(ca+.8*(4-a)).toFixed(2)} mg/dL</b>`)}
+function abg(){let p=n('ph'),c=n('pco'),h=n('hco'),po=n('po'),fio=n('fio');if(!(p>=6.5&&p<=8&&c>0&&h>0)){out('abgo','Enter pH, PaCO₂ and HCO₃.');return}let acid=p<7.35?'Acidemia':p>7.45?'Alkalemia':'pH within reference interval';let primary='';if(p<7.35)primary=(c>45&&h<24)?'Respiratory and/or mixed acidosis pattern':(c<35&&h<22)?'Metabolic acidosis with respiratory alkalosis or mixed disorder':c>45?'Respiratory acidosis pattern':'Metabolic acidosis pattern';else if(p>7.45)primary=(c<35&&h>26)?'Respiratory and/or mixed alkalosis pattern':(c>45&&h>26)?'Metabolic alkalosis with respiratory acidosis or mixed disorder':c<35?'Respiratory alkalosis pattern':'Metabolic alkalosis pattern';else primary='Check for compensated or mixed disorder; pH alone is insufficient';let extra='';if(po>0&&fio>0)extra=`<br>PaO₂/FiO₂ ratio: <b>${(po/fio).toFixed(0)}</b> (interpret with clinical context; not diagnostic alone)`;out('abgo',`<b>${acid}</b><br>${primary}${extra}<br><span class="muted">Next assess expected compensation, anion gap, lactate, oxygenation, clinical context and mixed disorders. This is a rough pattern aid, not a definitive interpretation.</span>`)}
+function makeOrder(){let s=`CLINICAL ORDER DRAFT\nPatient: ${el('pid').value}\nAge/weight: ${el('pinfo').value}\nWorking diagnosis: ${el('dx').value}\nMedication: ${el('med').value}\nDose: ${el('doseorder').value}\nRoute/frequency/duration: ${el('route').value}\nConcentration/volume: ${el('strength').value}\nMonitoring/precautions: ${el('monitor').value}\n\nClinician review, verification and signature required.`;el('orderout').dataset.text=s;out('orderout','Draft generated below. Use Copy draft to copy it.');el('orderout').textContent=s}
+function copyOrder(){let s=el('orderout').dataset.text||'';if(!s){alert('Generate the draft first.');return}if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(s).then(()=>alert('Draft copied.'));else alert('Clipboard unavailable; select and copy the generated draft manually.')}
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script></body></html>
